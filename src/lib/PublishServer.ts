@@ -38,6 +38,10 @@ export class PublishServer {
     };
 
     this.server = createServer((req: RtspRequest, res: RtspResponse) => {
+      const url_split = req.uri.split("?token=");
+      const index_streamid = url_split[1].indexOf("/streamid=");
+      req.uri = url_split[0]+((index_streamid != -1)?url_split[1].substring(index_streamid):"");
+      req.token = (index_streamid==-1) ? url_split[1] : url_split[1].substring(0,index_streamid);
       switch (req.method) {
         case 'OPTIONS':
           return this.optionsRequest(req, res);

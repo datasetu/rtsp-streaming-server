@@ -42,6 +42,10 @@ export class ClientServer {
 
     this.server = createServer((req: RtspRequest, res: RtspResponse) => {
       debug('%s:%s request: %s', req.socket.remoteAddress, req.socket.remotePort, req.method);
+      const url_split = req.uri.split("?token=");
+      const index_streamid = url_split[1].indexOf("/streamid=");
+      req.uri = url_split[0]+((index_streamid != -1)?url_split[1].substring(index_streamid):"");
+      req.token = (index_streamid==-1) ? url_split[1] : url_split[1].substring(0,index_streamid);
       switch (req.method) {
         case 'DESCRIBE':
           return this.describeRequest(req, res);
