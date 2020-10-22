@@ -16,6 +16,7 @@ declare module 'rtsp-server' {
     on(event: 'data', callback: (buffer: Buffer) => void): void;
     on(event: 'end', callback: () => void): void;
     socket: Socket;
+    token: string;
   }
 
   export interface RtspResponse {
